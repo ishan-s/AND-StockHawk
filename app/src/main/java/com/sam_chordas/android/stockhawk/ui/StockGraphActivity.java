@@ -1,6 +1,7 @@
 package com.sam_chordas.android.stockhawk.ui;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -8,6 +9,12 @@ import android.util.Log;
 import com.db.chart.model.LineSet;
 import com.db.chart.view.ChartView;
 import com.db.chart.view.LineChartView;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sam_chordas.android.stockhawk.R;
@@ -15,6 +22,7 @@ import com.sam_chordas.android.stockhawk.data.graph.Date;
 import com.sam_chordas.android.stockhawk.data.graph.Series;
 import com.sam_chordas.android.stockhawk.data.graph.StockGraphData;
 import com.sam_chordas.android.stockhawk.rest.Const;
+import com.sam_chordas.android.stockhawk.rest.Utils;
 import com.sam_chordas.android.stockhawk.service.StockGraphService;
 
 
@@ -32,14 +40,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class StockGraphActivity extends Activity {
     Retrofit retrofit;
     StockGraphService stockGraphService;
-    LineChartView lineChartView;
-    LineSet lineSet;
+    LineChart lineChart;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_line_graph);
+        setContentView(R.layout.activity_stock_graph);
 
-        lineChartView = (LineChartView) findViewById(R.id.stock_linechart);
+        lineChart = (LineChart) findViewById(R.id.stock_linechart);
 
         Gson lenientGson = new GsonBuilder()
                 .setLenient()
@@ -51,9 +59,6 @@ public class StockGraphActivity extends Activity {
 
         stockGraphService = retrofit.create(StockGraphService.class);
         Call<ResponseBody> stockGraphDataCall = stockGraphService.getGraphData("GOOG");
-        lineSet = new LineSet();
-        lineChartView.addData(lineSet);
-
 
         stockGraphDataCall.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -66,6 +71,10 @@ public class StockGraphActivity extends Activity {
                     StockGraphData stockGraphData = gson.fromJson(jsonFromResponse, StockGraphData.class);
                     List<Series> seriesJson = stockGraphData.getSeries();
                     int xi=0;
+
+                    ArrayList<Entry> entries = new ArrayList<>();
+                    ArrayList<String> xvalues = new ArrayList<>();
+
                     String[] labels = new String[seriesJson.size()];
                     float[] values = new float[seriesJson.size()];
 
@@ -78,12 +87,30 @@ public class StockGraphActivity extends Activity {
                         labels[xi] = dateStr;
                         values[xi] = closeFloat;
 
-                        lineSet.addPoint("", closeFloat);
+                        double yValue = closeFloat;
+                        xvalues.add(Utils.convertDate(dateStr));
+                        entries.add(new Entry((float) yValue, xi));
                         xi++;
                     }
 
-                    lineChartView.notifyDataUpdate();
-                    lineChartView.show();
+
+                    XAxis xAxis = lineChart.getXAxis();
+                    xAxis.setLabelsToSkip(4);
+                    xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+                    xAxis.setTextSize(12f);
+                    YAxis left = lineChart.getAxisLeft();
+                    left.setEnabled(true);
+                    left.setLabelCount(5, true);
+
+                    lineChart.getAxisRight().setEnabled(false);
+
+                    lineChart.getLegend().setTextSize(16f);
+
+                    LineDataSet dataSet = new LineDataSet(entries, "GOOG");
+                    LineData lineData = new LineData(xvalues, dataSet);
+                    lineChart.setBackgroundColor(Color.WHITE);
+                    lineChart.setData(lineData);
+                    lineChart.invalidate();
                 }catch(Exception e){
                     e.printStackTrace();
                 }
