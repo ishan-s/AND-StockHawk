@@ -1,6 +1,7 @@
 package com.sam_chordas.android.stockhawk.ui;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -41,11 +42,15 @@ public class StockGraphActivity extends Activity {
     Retrofit retrofit;
     StockGraphService stockGraphService;
     LineChart lineChart;
+    String symbol;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stock_graph);
+
+        Intent incomingIntent = getIntent();
+        symbol = incomingIntent.getStringExtra("STOCK_SYMBOL");
 
         lineChart = (LineChart) findViewById(R.id.stock_linechart);
 
@@ -95,7 +100,7 @@ public class StockGraphActivity extends Activity {
 
 
                     XAxis xAxis = lineChart.getXAxis();
-                    xAxis.setLabelsToSkip(4);
+                    xAxis.setLabelsToSkip(30);
                     xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
                     xAxis.setTextSize(12f);
                     YAxis left = lineChart.getAxisLeft();
