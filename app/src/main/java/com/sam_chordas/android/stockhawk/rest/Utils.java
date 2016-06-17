@@ -4,7 +4,13 @@ import android.content.ContentProviderOperation;
 import android.util.Log;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -112,13 +118,17 @@ public class Utils {
     return builder.build();
   }
 
-  public static String convertDate(String inputDate){
-    StringBuilder outputFormattedDate = new StringBuilder();
-    outputFormattedDate.append(inputDate.substring(6))
-            .append("/")
-            .append(inputDate.substring(4,6))
-            .append("/")
-            .append(inputDate.substring(2, 4));
-    return outputFormattedDate.toString();
+  public static String parseGraphDate(String inputDate){
+    DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+    Date date = null;
+    try {
+      date = (Date) dateFormat.parse(inputDate);
+    }catch(ParseException pe){
+      pe.printStackTrace();
+      return null;
+    }
+
+    DateFormat outputDateFormat = new SimpleDateFormat("dd MMM");
+    return outputDateFormat.format(date);
   }
 }

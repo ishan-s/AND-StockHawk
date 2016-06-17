@@ -77,6 +77,7 @@ public class StockRemoteViewFactory implements RemoteViewsService.RemoteViewsFac
 
     @Override
     public RemoteViews getViewAt(int position) {
+        Log.i("$RVF$" , "outer: getViewsAt("+position+")");
         if(cursor==null || context==null)
             return null;
 
@@ -86,11 +87,14 @@ public class StockRemoteViewFactory implements RemoteViewsService.RemoteViewsFac
             String bidPrice = cursor.getString(QUERY_INDEX_BIDPRICE);
             String change = cursor.getString(QUERY_INDEX_CHANGE);
 
-            Log.i("$D$", "symbol="+symbol+", bid="+bidPrice+", change="+change);
-
             remoteViews.setTextViewText(R.id.stock_symbol, symbol);
             remoteViews.setTextViewText(R.id.bid_price, bidPrice);
             remoteViews.setTextViewText(R.id.change, change);
+
+            Intent fillInIntent = new Intent();
+            fillInIntent.setAction(StockHawkWidgetProvider.OPEN_STOCK);
+            fillInIntent.putExtra("STOCK_SYMBOL", symbol);
+            remoteViews.setOnClickFillInIntent(R.id.list_item_quote_linearlayout, fillInIntent);
 
             if (cursor.getInt(QUERY_INDEX_ISUP) == 1)
                 remoteViews.setInt(R.id.change, "setBackgroundResource",

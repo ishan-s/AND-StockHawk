@@ -1,17 +1,19 @@
 <resources>
-    <string name="app_name">Stock Hawk</string>
-
-    <string name="action_example">Example action</string>
-
-    <string name="action_settings">Settings</string>
-    <string name="action_change_units">Change Units</string>
-    <string name="symbol_search">Symbol Search</string>
-    <string name="content_test">Search for a Stock Symbol</string>
-    <string name="input_hint">FB</string>
+    <string name="app_name" translatable="false">Stock Hawk</string>
+    <string name="action_example" translatable="false">Example action</string>
+    <string name="action_settings" translatable="true">Settings</string>
+    <string name="action_change_units" translatable="true">Change Units</string>
+    <string name="symbol_search" translatable="true">Symbol Search</string>
+    <string name="content_test" translatable="true">Search for a Stock Symbol</string>
+    <string name="input_hint" translatable="false">FB</string>
     <string name="input_prefill"></string>
-    <string name="network_toast">Uh-oh! This app requires an internet connection</string>
-    <string name="invalid_stock_msg">Invalid stock symbol entered!</string>
-    <string name="no_data_present">No stock data available for display!</string>
-    <string name="widget_main_title">Stock Hawk</string>
-    <string name="stock_already_saved">This stock is already saved!</string>
+    <string name="network_toast" translatable="true">Uh-oh! This app requires an internet connection!</string>
+    <string name="invalid_stock_msg" translatable="true">Invalid stock symbol entered!</string>
+    <string name="no_data_present" translatable="true">No stock data available for display!</string>
+    <string name="widget_main_title" translatable="false">Stock Hawk</string>
+    <string name="stock_already_saved" translatable="true">This stock is already saved!</string>
+    <string name="title_activity_main" translatable="false">MainActivity</string>
+    <string name="stock_graph_activity_title" translatable="true">"Graph: "</string>
+    <string name="graph_description_text" translatable="true">Day Closing Stock Quotes</string>
+    <string name="unexpected_err_msg">Unexpected error occurred!</string>
 </resources>
