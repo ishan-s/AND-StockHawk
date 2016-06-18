@@ -43,6 +43,10 @@ import com.melnykov.fab.FloatingActionButton;
 import com.sam_chordas.android.stockhawk.touch_helper.SimpleItemTouchHelperCallback;
 import com.squareup.okhttp.internal.Util;
 
+import butterknife.BindString;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MyStocksActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     /**
@@ -61,11 +65,24 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     private Cursor mCursor;
     boolean isConnected;
 
-    RecyclerView recyclerView;
-    TextView emptyDataTextView;
-    TextView emptyDataReasonTextView;
-    LinearLayout emptyDataLinearLayout;
-    FrameLayout myStocksFrameLayout;
+    @BindView(R.id.recycler_view) RecyclerView recyclerView;
+    @BindView(R.id.empty_stocks_nodata_textview) TextView emptyDataTextView;
+    @BindView(R.id.empty_stocks_reason_textview) TextView emptyDataReasonTextView;
+    @BindView(R.id.empty_stocks_linearlayout) LinearLayout emptyDataLinearLayout;
+    @BindView(R.id.my_stocks_framelayout) FrameLayout myStocksFrameLayout;
+    @BindView(R.id.fab) FloatingActionButton fab;
+
+    @BindString(R.string.unexpected_err_msg) String STRING_UNEXPECTED_ERR_MSG;
+    @BindString(R.string.network_status) String STRING_NETWORK_STATUS;
+    @BindString(R.string.no_data_present) String STRING_NO_DATA_PRESENT ;
+    @BindString(R.string.no_stocks_added) String STRING_NO_STOCKS_ADDED;
+    @BindString(R.string.no_network) String STRING_NO_NETWORK;
+    @BindString(R.string.malformed_response) String STRING_MALFORMED_RESPONSE;
+    @BindString(R.string.server_down) String STRING_SERVER_DOWN;
+    @BindString(R.string.internal_server_error) String STRING_INTERNAL_SERVER_ERROR;
+    @BindString(R.string.network_toast) String STRING_NETWORK_TOAST;
+
+
     StockTaskService stockTaskService;
 
     @Override
@@ -73,14 +90,9 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
         super.onCreate(savedInstanceState);
         mContext = this;
         setContentView(R.layout.activity_my_stocks);
+        ButterKnife.bind(this);
 
         isConnected = Utils.isNetworkConnected(this);
-
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        emptyDataTextView = (TextView) findViewById(R.id.empty_stocks_nodata_textview);
-        emptyDataReasonTextView = (TextView) findViewById(R.id.empty_stocks_reason_textview);
-        emptyDataLinearLayout = (LinearLayout) findViewById(R.id.empty_stocks_linearlayout);
-        myStocksFrameLayout = (FrameLayout) findViewById(R.id.my_stocks_framelayout);
 
         // The intent service is for executing immediate pulls from the Yahoo API
         // GCMTaskService can only schedule tasks, they cannot execute immediately
@@ -113,20 +125,6 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                 }));
         recyclerView.setAdapter(mCursorAdapter);
 
-        /*
-        Log.i("$MSA$", "getItemCount="+mCursorAdapter.getItemCount());
-        if (mCursorAdapter.getItemCount() == 0) {
-            setEmptyViewUI(true);
-        } else {
-            if(!isConnected){
-                showSnackbar(this.recyclerView, R.string.stale_data);
-            }
-            setEmptyViewUI(false);
-        } */
-
-        setEmptyViewUI(true);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.attachToRecyclerView(recyclerView);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -166,6 +164,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
         mItemTouchHelper = new ItemTouchHelper(callback);
         mItemTouchHelper.attachToRecyclerView(recyclerView);
 
+        setEmptyViewUI(true);
         mTitle = getTitle();
         if (isConnected) {
             long period = 3600L;
@@ -191,7 +190,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
 
     public void setEmptyViewUI(boolean forceSetEmpty) {
         if (forceSetEmpty) {
-            emptyDataReasonTextView.setText(getString(R.string.unexpected_err_msg));
+            emptyDataReasonTextView.setText(STRING_UNEXPECTED_ERR_MSG);
 
             recyclerView.setVisibility(View.GONE);
             emptyDataTextView.setVisibility(View.VISIBLE);
@@ -208,40 +207,40 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
         } else {
             //No data present for the recyclerView to show
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
-            @StockTaskService.StockServiceNetworkStatus int networkStatus = sharedPreferences.getInt(getString(R.string.network_status), -1);
+            @StockTaskService.StockServiceNetworkStatus int networkStatus = sharedPreferences.getInt(STRING_NETWORK_STATUS, -1);
 
-            emptyDataTextView.setText(getString(R.string.no_data_present));
+            emptyDataTextView.setText(STRING_NO_DATA_PRESENT);
             switch (networkStatus) {
                 case StockTaskService.STATUS_OK:
-                    emptyDataReasonTextView.setText(getString(R.string.no_stocks_added));
+                    emptyDataReasonTextView.setText(STRING_NO_STOCKS_ADDED);
                     break;
 
                 case StockTaskService.STATUS_NETWORK_UNAVAILABLE:
-                    emptyDataReasonTextView.setText(getString(R.string.no_network));
+                    emptyDataReasonTextView.setText(STRING_NO_NETWORK);
                     break;
 
                 case StockTaskService.STATUS_BAD_JSON:
-                    emptyDataReasonTextView.setText(getString(R.string.malformed_response));
+                    emptyDataReasonTextView.setText(STRING_MALFORMED_RESPONSE);
                     break;
 
                 case StockTaskService.STATUS_SERVER_DOWN:
-                    emptyDataReasonTextView.setText(getString(R.string.server_down));
+                    emptyDataReasonTextView.setText(STRING_SERVER_DOWN);
                     break;
 
                 case StockTaskService.STATUS_SERVER_ERROR:
-                    emptyDataReasonTextView.setText(getString(R.string.internal_server_error));
+                    emptyDataReasonTextView.setText(STRING_INTERNAL_SERVER_ERROR);
                     break;
 
                 case StockTaskService.STATUS_BAD_REQUEST:
-                    emptyDataReasonTextView.setText(getString(R.string.unexpected_err_msg));
+                    emptyDataReasonTextView.setText(STRING_UNEXPECTED_ERR_MSG);
                     break;
 
                 case StockTaskService.STATUS_UNKNOWN:
-                    emptyDataReasonTextView.setText(getString(R.string.unexpected_err_msg));
+                    emptyDataReasonTextView.setText(STRING_UNEXPECTED_ERR_MSG);
                     break;
 
                 default:
-                    emptyDataReasonTextView.setText(getString(R.string.unexpected_err_msg));
+                    emptyDataReasonTextView.setText(STRING_UNEXPECTED_ERR_MSG);
                     break;
 
             }
@@ -260,7 +259,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     }
 
     public void networkToast() {
-        Toast.makeText(mContext, getString(R.string.network_toast), Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, STRING_NETWORK_TOAST, Toast.LENGTH_SHORT).show();
     }
 
     public void restoreActionBar() {
