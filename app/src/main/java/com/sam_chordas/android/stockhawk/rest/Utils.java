@@ -1,5 +1,7 @@
 package com.sam_chordas.android.stockhawk.rest;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.ContentProviderOperation;
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -8,8 +10,10 @@ import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
 
+import com.sam_chordas.android.stockhawk.R;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
+import com.sam_chordas.android.stockhawk.widget.StockHawkWidgetProvider;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -155,4 +159,11 @@ public class Utils {
 
   }
 
+  public static void refreshWidget(Context context) {
+    AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context.getApplicationContext());
+    int[] ids = appWidgetManager.getAppWidgetIds(new ComponentName(context.getApplicationContext(), StockHawkWidgetProvider.class));
+    if (ids.length > 0) {
+      appWidgetManager.notifyAppWidgetViewDataChanged(ids, R.id.widget_stocks_listview);
+    }
+  }
 }

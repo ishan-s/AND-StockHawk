@@ -4,6 +4,10 @@
     android:minHeight="180dp"
     android:minWidth="250dp"
     android:updatePeriodMillis="3600000"
-    android:widgetCategory="home_screen">
+    android:widgetCategory="home_screen"
+    android:minResizeHeight="110dp"
+    android:minResizeWidth="180dp"
+    android:resizeMode="vertical|horizontal"
+    android:previewImage="@drawable/stock_hawk_widget_preview">
 
 </appwidget-provider>
