@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 
@@ -45,12 +46,14 @@ public class StockGraphActivity extends AppCompatActivity {
     StockGraphService stockGraphService;
 
     @BindView(R.id.stock_graph_linechart) LineChart stockLineChart;
+    @BindView(R.id.stocks_graph_toolbar)Toolbar toolbar;
 
     @BindColor(R.color.material_blue_500) int COLOR_MATERIAL_BLUE_500;
     @BindColor(R.color.material_dark_blue_900) int COLOR_MATERIAL_DARK_BLUE_900;
     @BindString(R.string.graph_description_text) String STRING_GRAPH_DESCRIPTION_TEXT;
     @BindString(R.string.stock_graph_activity_title) String STRING_GRAPH_ACTIVITY_TITLE;
     @BindString(R.string.graph_no_data_text) String STRING_GRAPH_NO_DATA_TEXT;
+
 
     String symbol;
 
@@ -59,16 +62,14 @@ public class StockGraphActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_line_graph);
         ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
 
         Intent incomingIntent = getIntent();
         symbol = incomingIntent.getStringExtra(Const.EXTRA_STOCK_SYMBOL);
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle(STRING_GRAPH_ACTIVITY_TITLE+symbol);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle(STRING_GRAPH_ACTIVITY_TITLE+symbol);
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(Const.YAHOO_CHART_BASE_URL)

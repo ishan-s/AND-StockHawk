@@ -7,17 +7,17 @@ import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.InputType;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,9 +39,8 @@ import com.sam_chordas.android.stockhawk.service.StockTaskService;
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.PeriodicTask;
 import com.google.android.gms.gcm.Task;
-import com.melnykov.fab.FloatingActionButton;
+
 import com.sam_chordas.android.stockhawk.touch_helper.SimpleItemTouchHelperCallback;
-import com.squareup.okhttp.internal.Util;
 
 import butterknife.BindString;
 import butterknife.BindView;
@@ -69,8 +68,9 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     @BindView(R.id.empty_stocks_nodata_textview) TextView emptyDataTextView;
     @BindView(R.id.empty_stocks_reason_textview) TextView emptyDataReasonTextView;
     @BindView(R.id.empty_stocks_linearlayout) LinearLayout emptyDataLinearLayout;
-    @BindView(R.id.my_stocks_framelayout) FrameLayout myStocksFrameLayout;
+    @BindView(R.id.my_stocks_coordinatorlayout) CoordinatorLayout myStocksCoordinatorLayout;
     @BindView(R.id.fab) FloatingActionButton fab;
+    @BindView(R.id.my_stocks_toolbar) Toolbar toolbar;
 
     @BindString(R.string.unexpected_err_msg) String STRING_UNEXPECTED_ERR_MSG;
     @BindString(R.string.network_status) String STRING_NETWORK_STATUS;
@@ -92,6 +92,8 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
         setContentView(R.layout.activity_my_stocks);
         ButterKnife.bind(this);
 
+        setSupportActionBar(toolbar);
+
         isConnected = Utils.isNetworkConnected(this);
 
         // The intent service is for executing immediate pulls from the Yahoo API
@@ -104,7 +106,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
             if (isConnected) {
                 startService(mServiceIntent);
             } else {
-                Utils.showSnackbar(myStocksFrameLayout, R.string.network_toast, Utils.SNACKBAR_TYPE_ERROR);
+                Utils.showSnackbar(myStocksCoordinatorLayout, R.string.network_toast, Utils.SNACKBAR_TYPE_ERROR);
             }
         }
 
@@ -125,7 +127,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                 }));
         recyclerView.setAdapter(mCursorAdapter);
 
-        fab.attachToRecyclerView(recyclerView);
+        //fab.attachToRecyclerView(recyclerView);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

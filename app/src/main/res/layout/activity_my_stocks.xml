@@ -1,57 +1,68 @@
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:fab="http://schemas.android.com/tools"
-    android:id="@+id/my_stocks_framelayout"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/my_stocks_coordinatorlayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    android:fitsSystemWindows="true">
 
-  <android.support.v7.widget.RecyclerView
-      android:id="@+id/recycler_view"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:contentDescription="@string/stock_recyclerview_content_desc"
-      />
-  <LinearLayout
-      android:id="@+id/empty_stocks_linearlayout"
-      android:layout_gravity="center"
-      android:gravity="center"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:orientation="vertical">
-    <TextView
-        android:id="@+id/empty_stocks_nodata_textview"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_stocks_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:text="@string/no_stocks_to_display"
-        android:gravity="center"
-        android:layout_gravity="center"/>
-    <TextView
-        android:id="@+id/empty_stocks_reason_textview"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_collapseMode="pin"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:text="@string/no_stocks_to_display"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="?attr/actionBarSize">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/stock_recyclerview_content_desc" />
+
+    <LinearLayout
+        android:id="@+id/empty_stocks_linearlayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
         android:gravity="center"
-        android:layout_gravity="center"/>
-  </LinearLayout>
+        android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/empty_stocks_nodata_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/no_stocks_to_display"
+            android:visibility="gone" />
 
-  <com.melnykov.fab.FloatingActionButton
-      android:id="@+id/fab"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="bottom|end"
-      android:layout_margin="16dp"
-      android:src="@drawable/ic_add_white_24dp"
-      android:contentDescription="@string/fab_content_desc"
-      fab:fab_colorNormal="@color/material_blue_500"
-      fab:fab_colorPressed="@color/material_blue_600"
-      fab:fab_colorRipple="@color/ripple"
-      fab:fab_shadow="true"
-      fab:fab_type="normal"
-      fab:layout_anchor="recycler_view"
-      fab:layout_anchorGravity="bottom | end"
-      />
-</FrameLayout>
+        <TextView
+            android:id="@+id/empty_stocks_reason_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/no_stocks_to_display"
+            android:visibility="gone" />
+    </LinearLayout>
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_gravity="bottom|end"
+        android:contentDescription="@string/fab_content_desc"
+        android:clickable="true"
+        android:src="@drawable/ic_add_white_24dp"
+        app:fabSize="normal"
+        />
+
+</android.support.design.widget.CoordinatorLayout>
+
