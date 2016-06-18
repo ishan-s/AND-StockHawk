@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/stock_graph_linearlayout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
 
-    <com.db.chart.view.LineChartView
-        xmlns:chart="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/stock_linechartview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        chart:chart_axisColor="@color/md_divider_white"
-        />
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/stock_graph_linechart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/linechart_content_desc"
+                />
 
-</FrameLayout>
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>

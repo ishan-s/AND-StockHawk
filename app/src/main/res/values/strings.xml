@@ -21,7 +21,11 @@
     <string name="no_stocks_added" translatable="true">No stocks are added currently. Add some stocks to start!</string>
     <string name="no_network" translatable="true">No network connectivity. Cannot fetch stocks data without internet connectivity!</string>
     <string name="malformed_response" translatable="true">Bad response from the server! Please retry again later.</string>
-    <string name="server_down" translatable="true">Server seems to be down at the moment! Please try again later!</string>
+    <string name="server_down" translatable="true">Server seems to be down at the moment! Please try again later.</string>
     <string name="internal_server_error" translatable="true">Internal Server Error. There has been some error in processing at the Server\'s end.</string>
     <string name="stale_data" translatable="true">There is no network connectivity right now. The stock data may be stale!</string>
+    <string name="widget_description" translatable="true">Stocks list for the widget</string>
+    <string name="fab_content_desc" translatable="true">Add a stock by entering its symbol</string>
+    <string name="stock_recyclerview_content_desc" translatable="true">List of added stocks</string>
+    <string name="linechart_content_desc" translatable="true">Graph plotting the closing values of the stocks over the last 3 months</string>
 </resources>

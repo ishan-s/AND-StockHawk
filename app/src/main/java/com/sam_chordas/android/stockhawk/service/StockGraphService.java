@@ -16,7 +16,7 @@ public interface StockGraphService {
         @Path("symbol") String symbol
     );
 */
-    @GET("{symbol}/chartdata;type=quote;range=1y/json")
+    @GET("{symbol}/chartdata;type=quote;range=3m/json")
     Call<ResponseBody> getGraphData(
             @Path("symbol") String symbol
     );

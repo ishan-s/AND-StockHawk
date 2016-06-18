@@ -45,7 +45,7 @@ public class StockGraphActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_stock_graph);
+        setContentView(R.layout.activity_line_graph);
 
         Intent incomingIntent = getIntent();
         symbol = incomingIntent.getStringExtra("STOCK_SYMBOL");

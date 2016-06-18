@@ -8,7 +8,7 @@
         android:id="@+id/widget_stocks_listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:contentDescription="Stocks list for the widget"
+        android:contentDescription="@string/widget_description"
         android:layout_gravity="center"
         />
     <TextView
