@@ -115,7 +115,7 @@ public class StockRemoteViewFactory implements RemoteViewsService.RemoteViewsFac
 
     @Override
     public int getViewTypeCount() {
-        //REMEMBER!!! Returning 0 instead of 1 would cause the remote views on the listview to not load
+        //REMEMBER: Returning 0 instead of 1 would cause the remote views on the listview to not load
         return 1;
     }
 

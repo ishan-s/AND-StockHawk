@@ -93,11 +93,9 @@ public class Utils {
   private static boolean isNullOrEmpty(JSONObject jsonObject, String key){
     try {
       String val = jsonObject.getString(key);
-      Log.i("$$$", val);
       if(val==null || "null".equalsIgnoreCase(val) || "".equals(val.trim()) || val.length()==0)
         return true;
     }catch (JSONException je){
-      Log.i("$DEBUG$", "JSONException while attempting to check isNullOrEmpty on "+key);
       return true;
     }
     return false;

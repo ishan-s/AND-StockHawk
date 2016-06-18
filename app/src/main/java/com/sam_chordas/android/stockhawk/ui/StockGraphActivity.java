@@ -44,6 +44,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class StockGraphActivity extends AppCompatActivity {
     Retrofit retrofit;
     StockGraphService stockGraphService;
+    ArrayList<Entry> closingQuotesYAxis;
+    ArrayList<String> datesXAxis;
 
     @BindView(R.id.stock_graph_linechart) LineChart stockLineChart;
     @BindView(R.id.stocks_graph_toolbar)Toolbar toolbar;
@@ -76,45 +78,58 @@ public class StockGraphActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        stockGraphService = retrofit.create(StockGraphService.class);
-        Call<ResponseBody> stockGraphDataCall = stockGraphService.getGraphData(symbol);
+        if(savedInstanceState == null) {
+            stockGraphService = retrofit.create(StockGraphService.class);
+            Call<ResponseBody> stockGraphDataCall = stockGraphService.getGraphData(symbol);
 
-        stockGraphDataCall.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    String responseStr = response.body().string();
-                    String jsonFromResponse = responseStr.substring(responseStr.indexOf("(") + 1, responseStr.lastIndexOf(")"));
+            stockGraphDataCall.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    try {
+                        String responseStr = response.body().string();
+                        String jsonFromResponse = responseStr.substring(responseStr.indexOf("(") + 1, responseStr.lastIndexOf(")"));
 
-                    Gson gson = new GsonBuilder().create();
-                    StockGraphData stockGraphData = gson.fromJson(jsonFromResponse, StockGraphData.class);
-                    List<Series> seriesJson = stockGraphData.getSeries();
-                    int xi=0;
+                        Gson gson = new GsonBuilder().create();
+                        StockGraphData stockGraphData = gson.fromJson(jsonFromResponse, StockGraphData.class);
+                        List<Series> seriesJson = stockGraphData.getSeries();
+                        int xi = 0;
 
-                    ArrayList<Entry> closingQuotesYAxis = new ArrayList<>();
-                    ArrayList<String> datesXAxis = new ArrayList<>();
+                        closingQuotesYAxis = new ArrayList<>();
+                        datesXAxis = new ArrayList<>();
 
-                    for(Series series : seriesJson){
-                        double yValue = (double) series.getClose();
-                        datesXAxis.add(Utils.parseGraphDate(String.valueOf(series.getDate())));
-                        closingQuotesYAxis.add(new Entry((float) yValue, xi++));
+                        for (Series series : seriesJson) {
+                            double yValue = (double) series.getClose();
+                            datesXAxis.add(Utils.parseGraphDate(String.valueOf(series.getDate())));
+                            closingQuotesYAxis.add(new Entry((float) yValue, xi++));
+                        }
+
+                        updateLineChart(datesXAxis, closingQuotesYAxis);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-
-                    updateLineChart(datesXAxis, closingQuotesYAxis);
-                }catch(Exception e){
-                    e.printStackTrace();
                 }
-            }
 
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
 
-                stockLineChart.setNoDataText(STRING_GRAPH_NO_DATA_TEXT);
-            }
-        });
+                    stockLineChart.setNoDataText(STRING_GRAPH_NO_DATA_TEXT);
+                }
+            });
+        }
+        else{
+            datesXAxis = savedInstanceState.getStringArrayList("SAVED_XAXIS_DATES");
+            closingQuotesYAxis = savedInstanceState.getParcelableArrayList("SAVED_YAXIS_ENTRIES");
 
+            updateLineChart(datesXAxis, closingQuotesYAxis);
+        }
 
+    }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelableArrayList("SAVED_YAXIS_ENTRIES", closingQuotesYAxis);
+        outState.putStringArrayList("SAVED_XAXIS_DATES", datesXAxis);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
