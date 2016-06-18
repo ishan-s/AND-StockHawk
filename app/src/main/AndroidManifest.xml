@@ -42,11 +42,6 @@
             android:authorities="com.sam_chordas.android.stockhawk.data.QuoteProvider"
             android:exported="true" />
 
-        <receiver android:name=".receivers.InvalidStockBroadcastReceiver">
-            <intent-filter>
-                <action android:name="com.sam_chordas.android.stockhawk.ui.MyStocksActivity.INVALID_STOCK" />
-            </intent-filter>
-        </receiver>
         <receiver
             android:name=".widget.StockHawkWidgetProvider"
             android:label="@string/widget_main_title">

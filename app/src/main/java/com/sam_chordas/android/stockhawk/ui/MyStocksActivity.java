@@ -1,9 +1,11 @@
 package com.sam_chordas.android.stockhawk.ui;
 
 import android.app.LoaderManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.Loader;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -91,7 +93,6 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
         mContext = this;
         setContentView(R.layout.activity_my_stocks);
         ButterKnife.bind(this);
-
         setSupportActionBar(toolbar);
 
         isConnected = Utils.isNetworkConnected(this);
@@ -187,6 +188,12 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
             // are updated.
             GcmNetworkManager.getInstance(this).schedule(periodicTask);
         }
+
+        InvalidStockBroadcastReceiver invalidStockBroadcastReceiver = new InvalidStockBroadcastReceiver();
+        IntentFilter invalidStockIntentFilter = new IntentFilter();
+        invalidStockIntentFilter.addAction("com.sam_chordas.android.stockhawk.ui.MyStocksActivity.INVALID_STOCK");
+        this.registerReceiver(invalidStockBroadcastReceiver, invalidStockIntentFilter);
+
     }
 
 
@@ -323,4 +330,14 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
         mCursorAdapter.swapCursor(null);
     }
 
-}
+    /* Broadcast receiver to receive the invalid stock broadcast from the service if thrown */
+    public class InvalidStockBroadcastReceiver extends BroadcastReceiver {
+        public InvalidStockBroadcastReceiver(){}
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Utils.showSnackbar(recyclerView, R.string.invalid_stock_msg, Utils.SNACKBAR_TYPE_ERROR);
+        }
+    }
+
+    }
