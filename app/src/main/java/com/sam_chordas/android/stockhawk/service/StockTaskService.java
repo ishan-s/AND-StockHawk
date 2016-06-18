@@ -206,7 +206,6 @@ public class StockTaskService extends GcmTaskService {
                     ArrayList<ContentProviderOperation> batch = Utils.quoteJsonToContentVals(getResponse);
                     if (batch == null || batch.size() == 0) {
                         //Possibly non-existent stock was entered
-                        // TODO: Figure out a way to show a meaningful error message - throw an intent to the main activity
                         mContext.sendBroadcast(new Intent("com.sam_chordas.android.stockhawk.ui.MyStocksActivity.INVALID_STOCK"));
                     } else {
                         mContext.getContentResolver().applyBatch(QuoteProvider.AUTHORITY, batch);

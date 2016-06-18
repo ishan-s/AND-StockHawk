@@ -22,7 +22,8 @@
             android:id="@+id/stock_graph_linechart"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:contentDescription="@string/linechart_content_desc" />
+            android:contentDescription="@string/linechart_content_desc"
+            android:background="@android:color/white"/>
 
     </LinearLayout>
 

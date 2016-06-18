@@ -144,6 +144,13 @@ public class Utils {
 
   public static void showSnackbar(View view, int messageResId, int snackbarType) {
     Snackbar snackbar = Snackbar.make(view, messageResId, Snackbar.LENGTH_LONG);
+    View snackBarView = snackbar.getView();
+    if(snackbarType==SNACKBAR_TYPE_ERROR) {
+      snackBarView.setBackgroundColor(snackBarView.getResources().getColor(R.color.material_red_700));
+    }
+    else if(snackbarType==SNACKBAR_TYPE_INFO) {
+      snackBarView.setBackgroundColor(snackBarView.getResources().getColor(R.color.material_yellow_900));
+    }
     snackbar.show();
   }
 

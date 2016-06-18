@@ -52,9 +52,12 @@ public class StockGraphActivity extends AppCompatActivity {
 
     @BindColor(R.color.material_blue_500) int COLOR_MATERIAL_BLUE_500;
     @BindColor(R.color.material_dark_blue_900) int COLOR_MATERIAL_DARK_BLUE_900;
+    @BindColor(R.color.material_pink_400) int COLOR_MATERIAL_PINK_400;
+
     @BindString(R.string.graph_description_text) String STRING_GRAPH_DESCRIPTION_TEXT;
     @BindString(R.string.stock_graph_activity_title) String STRING_GRAPH_ACTIVITY_TITLE;
     @BindString(R.string.graph_no_data_text) String STRING_GRAPH_NO_DATA_TEXT;
+    @BindString(R.string.graph_fetching_data_text) String STRING_GRAPH_FETCHING_DATA;
 
 
     String symbol;
@@ -78,6 +81,12 @@ public class StockGraphActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
+        if(Utils.isNetworkConnected(this)){
+            stockLineChart.setNoDataText(STRING_GRAPH_FETCHING_DATA);
+        }
+        else{
+            Utils.showSnackbar(stockLineChart, R.string.no_network, Utils.SNACKBAR_TYPE_ERROR);
+        }
         if(savedInstanceState == null) {
             stockGraphService = retrofit.create(StockGraphService.class);
             Call<ResponseBody> stockGraphDataCall = stockGraphService.getGraphData(symbol);
@@ -163,7 +172,7 @@ public class StockGraphActivity extends AppCompatActivity {
         dataSet.setCircleColorHole(COLOR_MATERIAL_DARK_BLUE_900);
         dataSet.setColor(COLOR_MATERIAL_BLUE_500);
         dataSet.setLineWidth(3);
-        dataSet.setCircleRadius(3.0f);
+        dataSet.setCircleRadius(4.0f);
 
         LineData lineData = new LineData(xAxisValues, dataSet);
         stockLineChart.setBackgroundColor(Color.WHITE);
