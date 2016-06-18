@@ -1,7 +1,13 @@
 package com.sam_chordas.android.stockhawk.rest;
 
 import android.content.ContentProviderOperation;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.view.View;
+
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
 
@@ -21,6 +27,8 @@ import org.json.JSONObject;
 public class Utils {
 
   private static String LOG_TAG = Utils.class.getSimpleName();
+  public static int SNACKBAR_TYPE_INFO = 0;
+  public static int SNACKBAR_TYPE_ERROR = 1;
 
   public static boolean showPercent = true;
 
@@ -131,4 +139,20 @@ public class Utils {
     DateFormat outputDateFormat = new SimpleDateFormat("dd MMM");
     return outputDateFormat.format(date);
   }
+
+  public static void showSnackbar(View view, int messageResId, int snackbarType) {
+    Snackbar snackbar = Snackbar.make(view, messageResId, Snackbar.LENGTH_LONG);
+    snackbar.show();
+  }
+
+  public static boolean isNetworkConnected(Context context){
+    ConnectivityManager cm =
+            (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+    NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+    return (activeNetwork != null &&
+            activeNetwork.isConnectedOrConnecting());
+
+  }
+
 }

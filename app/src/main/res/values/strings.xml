@@ -6,7 +6,7 @@
     <string name="symbol_search" translatable="true">Symbol Search</string>
     <string name="content_test" translatable="true">Search for a Stock Symbol</string>
     <string name="input_hint" translatable="false">FB</string>
-    <string name="input_prefill"></string>
+    <string name="input_prefill" translatable="false"></string>
     <string name="network_toast" translatable="true">Uh-oh! This app requires an internet connection!</string>
     <string name="invalid_stock_msg" translatable="true">Invalid stock symbol entered!</string>
     <string name="no_data_present" translatable="true">No stock data available for display!</string>
@@ -15,5 +15,13 @@
     <string name="title_activity_main" translatable="false">MainActivity</string>
     <string name="stock_graph_activity_title" translatable="true">"Graph: "</string>
     <string name="graph_description_text" translatable="true">Day Closing Stock Quotes</string>
-    <string name="unexpected_err_msg">Unexpected error occurred!</string>
+    <string name="unexpected_err_msg" translatable="true">An unexpected error has occurred! Please contact the developer for help!</string>
+    <string name="no_stocks_to_display" translatable="true">No stocks to display right now!</string>
+    <string name="network_status" translatable="false">NETWORK_STATUS</string>
+    <string name="no_stocks_added" translatable="true">No stocks are added currently. Add some stocks to start!</string>
+    <string name="no_network" translatable="true">No network connectivity. Cannot fetch stocks data without internet connectivity!</string>
+    <string name="malformed_response" translatable="true">Bad response from the server! Please retry again later.</string>
+    <string name="server_down" translatable="true">Server seems to be down at the moment! Please try again later!</string>
+    <string name="internal_server_error" translatable="true">Internal Server Error. There has been some error in processing at the Server\'s end.</string>
+    <string name="stale_data" translatable="true">There is no network connectivity right now. The stock data may be stale!</string>
 </resources>
