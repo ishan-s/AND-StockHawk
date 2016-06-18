@@ -28,4 +28,5 @@
     <string name="fab_content_desc" translatable="true">Add a stock by entering its symbol</string>
     <string name="stock_recyclerview_content_desc" translatable="true">List of added stocks</string>
     <string name="linechart_content_desc" translatable="true">Graph plotting the closing values of the stocks over the last 3 months</string>
+    <string name="graph_no_data_text" translatable="true">Could not fetch data for displaying the graph. Please try again later.</string>
 </resources>

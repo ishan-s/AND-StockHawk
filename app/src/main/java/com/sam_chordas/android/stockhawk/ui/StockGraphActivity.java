@@ -29,6 +29,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+import butterknife.BindColor;
+import butterknife.BindString;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,26 +43,32 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class StockGraphActivity extends AppCompatActivity {
     Retrofit retrofit;
     StockGraphService stockGraphService;
-    LineChart stockLineChart;
+
+    @BindView(R.id.stock_graph_linechart) LineChart stockLineChart;
+
+    @BindColor(R.color.material_blue_500) int COLOR_MATERIAL_BLUE_500;
+    @BindColor(R.color.material_dark_blue_900) int COLOR_MATERIAL_DARK_BLUE_900;
+    @BindString(R.string.graph_description_text) String STRING_GRAPH_DESCRIPTION_TEXT;
+    @BindString(R.string.stock_graph_activity_title) String STRING_GRAPH_ACTIVITY_TITLE;
+    @BindString(R.string.graph_no_data_text) String STRING_GRAPH_NO_DATA_TEXT;
+
     String symbol;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_line_graph);
+        ButterKnife.bind(this);
 
         Intent incomingIntent = getIntent();
-        symbol = incomingIntent.getStringExtra("STOCK_SYMBOL");
+        symbol = incomingIntent.getStringExtra(Const.EXTRA_STOCK_SYMBOL);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
-
-        actionBar.setTitle(getString(R.string.stock_graph_activity_title)+symbol);
-
-        stockLineChart = (LineChart) findViewById(R.id.stock_graph_linechart);
+        actionBar.setTitle(STRING_GRAPH_ACTIVITY_TITLE+symbol);
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(Const.YAHOO_CHART_BASE_URL)
@@ -97,7 +107,8 @@ public class StockGraphActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.i("$D$", "Failure : "+t.toString());
+
+                stockLineChart.setNoDataText(STRING_GRAPH_NO_DATA_TEXT);
             }
         });
 
@@ -129,12 +140,12 @@ public class StockGraphActivity extends AppCompatActivity {
 
         stockLineChart.getAxisRight().setEnabled(false);
         stockLineChart.getLegend().setTextSize(14f);
-        stockLineChart.setDescription(getString(R.string.graph_description_text));
+        stockLineChart.setDescription(STRING_GRAPH_DESCRIPTION_TEXT);
 
         LineDataSet dataSet = new LineDataSet(yAxisValues, symbol);
-        dataSet.setCircleColor(getResources().getColor(R.color.material_dark_blue_900));
-        dataSet.setCircleColorHole(getResources().getColor(R.color.material_dark_blue_900));
-        dataSet.setColor(getResources().getColor(R.color.material_blue_500));
+        dataSet.setCircleColor(COLOR_MATERIAL_DARK_BLUE_900);
+        dataSet.setCircleColorHole(COLOR_MATERIAL_DARK_BLUE_900);
+        dataSet.setColor(COLOR_MATERIAL_BLUE_500);
         dataSet.setLineWidth(3);
         dataSet.setCircleRadius(3.0f);
 
