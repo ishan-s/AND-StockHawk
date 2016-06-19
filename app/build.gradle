@@ -33,7 +33,6 @@ dependencies {
     compile 'org.apache.commons:commons-lang3:3.+'
     apt 'net.simonvt.schematic:schematic-compiler:0.6.3'
     compile 'net.simonvt.schematic:schematic:0.6.3'
-    compile 'com.melnykov:floatingactionbutton:1.2.0'
     compile 'com.android.support:design:23.1.1'
     compile 'com.github.PhilJay:MPAndroidChart:v2.2.5'
     compile 'com.jakewharton:butterknife:8.1.0'

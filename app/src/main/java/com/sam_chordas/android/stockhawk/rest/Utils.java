@@ -154,6 +154,7 @@ public class Utils {
     snackbar.show();
   }
 
+  /* Moved the isConnected check for use in other classes as well */
   public static boolean isNetworkConnected(Context context){
     ConnectivityManager cm =
             (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -164,11 +165,13 @@ public class Utils {
 
   }
 
+  /* Refresh the widgets to pick up updated data - after adding a new stock, etc*/
   public static void refreshWidget(Context context) {
-    AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context.getApplicationContext());
-    int[] ids = appWidgetManager.getAppWidgetIds(new ComponentName(context.getApplicationContext(), StockHawkWidgetProvider.class));
-    if (ids.length > 0) {
-      appWidgetManager.notifyAppWidgetViewDataChanged(ids, R.id.widget_stocks_listview);
+    AppWidgetManager appWidManager = AppWidgetManager.getInstance(context.getApplicationContext());
+    ComponentName widgetProviderComponentName = new ComponentName(context.getApplicationContext(), StockHawkWidgetProvider.class);
+    int[] widgetIds = appWidManager.getAppWidgetIds(widgetProviderComponentName);
+    if (widgetIds.length > 0) {
+      appWidManager.notifyAppWidgetViewDataChanged(widgetIds, R.id.widget_stocks_listview);
     }
   }
 }

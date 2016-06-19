@@ -33,6 +33,7 @@ public class StockHawkWidgetProvider extends AppWidgetProvider {
             remoteViews.setRemoteAdapter(R.id.widget_stocks_listview, remoteViewServiceIntent);
             remoteViews.setEmptyView(R.id.widget_stocks_listview, R.id.widget_stocks_textview);
 
+            //Shoot the intent to self for launching the graph activity
             Intent showGraphActivityIntent = new Intent(context, StockHawkWidgetProvider.class);
             showGraphActivityIntent.setAction(StockHawkWidgetProvider.OPEN_STOCK);
             showGraphActivityIntent.setData(Uri.parse(showGraphActivityIntent.toUri(Intent.URI_INTENT_SCHEME)));

@@ -95,11 +95,22 @@ public class StockGraphActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     try {
+                        /* The Yahoo! Charts API returns the JSON response wrapped in a function call,
+                           In order to use it with Retrofit, we could have either used a custom converter
+                           or get the response body, strip the function call wrap and then parse it using
+                           Gson explicitly.
+
+                           The latter approach was easier and suited the requirements for now so going with
+                           that.
+                         */
+
                         String responseStr = response.body().string();
                         String jsonFromResponse = responseStr.substring(responseStr.indexOf("(") + 1, responseStr.lastIndexOf(")"));
 
                         Gson gson = new GsonBuilder().create();
                         StockGraphData stockGraphData = gson.fromJson(jsonFromResponse, StockGraphData.class);
+
+                        //We only really need the dates and closing quote values - the 'Series' object is enough
                         List<Series> seriesJson = stockGraphData.getSeries();
                         int xi = 0;
 
@@ -112,6 +123,7 @@ public class StockGraphActivity extends AppCompatActivity {
                             closingQuotesYAxis.add(new Entry((float) yValue, xi++));
                         }
 
+                        //update the line chart to draw
                         updateLineChart(datesXAxis, closingQuotesYAxis);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -120,7 +132,6 @@ public class StockGraphActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
-
                     stockLineChart.setNoDataText(STRING_GRAPH_NO_DATA_TEXT);
                 }
             });

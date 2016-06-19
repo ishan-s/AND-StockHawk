@@ -7,10 +7,11 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
-/**
+/** Retrofit service class for invoking the Yahoo! Chart API
  * Created by Ishan on 17-06-2016.
  */
 public interface StockGraphService {
+
 /*    @GET("{symbol}/chartdata;type=quote;range=1y/json")
     Call<StockGraphData> getGraphData(
         @Path("symbol") String symbol
